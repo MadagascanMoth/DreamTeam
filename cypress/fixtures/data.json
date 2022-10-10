@@ -1,0 +1,17 @@
+{
+    "loginPageHeader":"Log in with your existing account",
+    "invalidEmail":"kingoftheworld@gmail.com",
+    "invalidPassword":"king",
+    "registerPageHeader":"Account Details:",
+    "alertEmail":"The email field must be a valid email",
+    "alertPassword":"The password field must be at least 5 characters",
+    "badCredentials":"Oops! Your email/password combination is incorrect",
+    "emptyPassword":"The password field is required",
+    "emptyEmail":"The email field must be a valid email",
+    "badEmail":"leto@gmail.com",
+    "badPassword":"zimazima5",
+    "unregEmail":"sranje@gmail.com",
+    "unregPass":"sranje",
+    "alreadyRegister":"The email field must be a valid email"
+    
+}

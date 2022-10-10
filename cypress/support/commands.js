@@ -23,3 +23,50 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("loginBE", (email, password) => {
+  cy.request({
+    method: "POST",
+    url: "https://cypress-api.vivifyscrum-stage.com/api/v2/login",
+    body: {
+      email,
+      password,
+      "g-recaptcha-response": "",
+    },
+  })
+    .its("body")
+    .then((response) => {
+      //cy.log(JSON.stringify(response))
+      window.localStorage.setItem("token", response.token);
+    });
+});
+
+Cypress.Commands.add("logoutBE", (token) => {
+  cy.request({
+    method: "POST",
+    url: "https://cypress-api.vivifyscrum-stage.com/api/v2/logout",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+});
+
+Cypress.Commands.add("Danijela", () => {
+  cy.session("Danijela", () => {
+    cy.request({
+      method: "POST",
+      url: "https://cypress-api.vivifyscrum-stage.com/api/v2/login",
+      body: {
+        email: "registracija123@gmail.com",
+        password: "registracija123",
+        "g-recaptcha-response": "",
+      },
+    })
+      .its("body")
+      .then((response) => {
+        //console.log(response.token)
+        window.localStorage.setItem("token", response.token);
+        window.localStorage.setItem("user_id", response.body.user.id);
+      });
+  });
+});
