@@ -20,12 +20,13 @@ class LoginPage {
 
   login(email, password) {
     this.emailInput.should("be.visible").type(email);
-    this.passwordInput.should("be.visible").type(password);
+    this.passwordInput.type(password);
     this.submitButton.should("be.visible").click();
   }
 
   loginBe() {
-    return cy
+    cy.session("Danijela", () => {
+      return cy
       .request({
         method: "POST",
         url: "https://cypress-api.vivifyscrum-stage.com/api/v2/login",
@@ -37,8 +38,14 @@ class LoginPage {
       })
       .then((response) => {
         window.localStorage.setItem("token", response.body.token);
+        window.localStorage.setItem("user_id", response.body.user.id);
+        window.localStorage.setItem('user',JSON.stringify(response.body.user));
         return response.body.token;
-      });
+      // }).then((response)=>{
+      //   cy.writeFile("cypress/fixtures/token.json", { token: response });
+      })
+    })
+    
   }
 
   loginFunction(email, password) {
@@ -54,7 +61,6 @@ class LoginPage {
     cy.wait("@validLogin").then((intercept) => {
       expect(intercept.response.statusCode).to.eq(200);
       expect(intercept.response.statusMessage).to.eq("OK");
-      // token = intercept.response.body.token;
       return intercept.response;
     });
   }
@@ -72,7 +78,6 @@ class LoginPage {
     cy.wait("@invalidLogin").then((intercept) => {
       expect(intercept.response.statusCode).to.eq(401);
       expect(intercept.response.statusMessage).to.eq("Unauthorized");
-      // token = intercept.response.body.token;
       return intercept.response;
     });
   }
@@ -127,6 +132,21 @@ class LoginPage {
     general.loginHeader.should("have.text", data.loginPageHeader);
     cy.url().should("contain", "/login");
   }
+
+  loginSession(name, email, password) {
+    cy.session(name,() => {
+      cy.visit("/");
+      cy.intercept("POST","https://cypress-api.vivifyscrum-stage.com/api/v2/login").as("validLogin");
+      loginPage.login((email = Cypress.env("validEmail")),(password = Cypress.env("validPassword")));
+      cy.url().should("contain","https://cypress.vivifyscrum-stage.com/my-organizations");
+      return cy.wait("@validLogin").then((intercept) => {
+        expect(intercept.response.statusCode).to.eq(200);
+        expect(intercept.response.statusMessage).to.eq("OK");
+        return intercept.response
+      });
+    });
+  }
+  
 }
 
 export const loginPage = new LoginPage();

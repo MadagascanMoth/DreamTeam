@@ -22,27 +22,15 @@ describe("Register a new account on Scrum", () => {
     registerPage.validRegister();
   });
 
-  it("Register with already registered email", () => {
-    registerPage.invalidRegister(
-      Cypress.env("validEmail"),
-      Cypress.env("validPassword"),
-      user.number
-    );
+  it("Register - NEG - with already registered email", () => {
+    registerPage.invalidRegister(Cypress.env("validEmail"),Cypress.env("validPassword"),user.number);
   });
 
-  it("Register with invalid email", () => {
-    registerPage.invalidRegister(
-      data.invalidEmail,
-      Cypress.env("validPassword"),
-      user.number
-    );
+  it("Register - NEG -  with invalid email", () => {
+    registerPage.invalidRegister(data.invalidEmail,Cypress.env("validPassword"),user.number);
   });
 
-  it("Register with invalid password", () => {
-    registerPage.invalidRegister(
-      Cypress.env("validEmail"),
-      data.invalidPassword,
-      user.number
-    );
+  it("Register - NEG -  with invalid password", () => {
+    registerPage.invalidRegister(Cypress.env("validEmail"),data.invalidPassword,user.number);
   });
 });

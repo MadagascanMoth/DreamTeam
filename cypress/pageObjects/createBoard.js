@@ -2,17 +2,9 @@ import { loginPage } from "../pageObjects/loginPage";
 import data from "../fixtures/data.json";
 import { general } from "../pageObjects/general";
 import { faker } from "@faker-js/faker";
-
-let board = {
-  name: faker.name.firstName(),
-  description: faker.random.word(),
-  editedName: faker.name.lastName(),
-};
-
-
 class CreateBoard {
   get add() {
-    return cy.get(".vs-c-my-organization__board-new");
+    return cy.get(".vs-c-my-organization__board-new").last();
   }
 
   clickOnAddButton() {
@@ -43,6 +35,10 @@ class CreateBoard {
     return cy.get("[name='next_btn']");
   }
 
+  get newOrgSign() {
+    return cy.get('[class="vs-c-site-logo vs-u-cursor--pointer"]');
+  }
+
   createBoard(name) {
     this.add.click();
     this.boardTitle.should("be.visible").type(name);
@@ -51,7 +47,7 @@ class CreateBoard {
     this.next2Button.should("be.visible").click();
     this.next3Button.should("be.visible").click();
     this.next3Button.should("be.visible").click();
-    this.finishButton.should("be.visible").click();
+    this.finishButton.click();
   }
 
   createBoardBE(token, boardName) {
@@ -70,7 +66,7 @@ class CreateBoard {
           team_members_board_id: "",
           organization_id: 21538,
           avatar_crop_cords: {},
-          file: ""
+          file: "",
         },
       })
       .then((response) => {
@@ -92,7 +88,6 @@ class CreateBoard {
       cy.wait("@validLogin").then((intercept) => {
         expect(intercept.response.statusCode).to.eq(200);
         expect(intercept.response.statusMessage).to.eq("OK");
-        // token = intercept.response.body.token;
       });
     });
   }
@@ -106,12 +101,23 @@ class CreateBoard {
     ).as("createBoard");
     createBoard.createBoard(name);
     return cy.wait("@createBoard").then((intercept) => {
-      //cy.log(JSON.stringify(intercept.response))
       expect(intercept.response.statusCode).to.eq(201);
       expect(intercept.response.statusMessage).to.eq("Created");
       expect(intercept.response.body.name).to.eq(name);
       return intercept.response;
     });
+  }
+
+  createBoardOrganization(name) {
+    this.newOrgSign.click({ force: true });
+    this.add.click({ force: true });
+    this.boardTitle.should("be.visible").type(name);
+    this.nextButton.should("be.visible").click();
+    this.kanbanButton.should("be.visible").click();
+    this.next2Button.should("be.visible").click();
+    this.next3Button.should("be.visible").click();
+    this.next3Button.should("be.visible").click();
+    this.finishButton.click();
   }
 }
 

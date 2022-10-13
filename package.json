@@ -9,7 +9,8 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^7.5.0",
-    "cypress": "^10.9.0"
+    "cypress": "^10.9.0",
+    "cypress-file-upload": "^5.0.8"
   },
   "dependencies": {
     "aggregate-error": "^3.1.0",
@@ -52,6 +53,7 @@
     "concat-map": "^0.0.1",
     "core-util-is": "^1.0.2",
     "cross-spawn": "^7.0.3",
+    "cypress-drag-drop": "^1.1.1",
     "dashdash": "^1.14.1",
     "dayjs": "^1.11.5",
     "debug": "^4.3.4",

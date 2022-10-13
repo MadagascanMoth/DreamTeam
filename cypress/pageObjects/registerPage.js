@@ -73,7 +73,6 @@ class RegisterPage {
     ).as("validRegister");
     registerPage.register(email, password, number);
     cy.wait("@validRegister").then((intercept) => {
-      //cy.log(JSON.stringify(intercept.response))
       expect(intercept.response.statusCode).to.eq(200);
       expect(intercept.response.statusMessage).to.eq("OK");
     });

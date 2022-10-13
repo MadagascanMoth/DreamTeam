@@ -1,3 +1,7 @@
+import 'cypress-file-upload';
+//import '@4tw/cypress-drag-drop'
+// require('@4tw/cypress-drag-drop')
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -36,8 +40,9 @@ Cypress.Commands.add("loginBE", (email, password) => {
   })
     .its("body")
     .then((response) => {
-      //cy.log(JSON.stringify(response))
       window.localStorage.setItem("token", response.token);
+      window.localStorage.setItem("user_id", response.body.user.id);
+      window.localStorage.setItem('user',JSON.stringify(response.body.user));
     });
 });
 
@@ -64,9 +69,9 @@ Cypress.Commands.add("Danijela", () => {
     })
       .its("body")
       .then((response) => {
-        //console.log(response.token)
         window.localStorage.setItem("token", response.token);
         window.localStorage.setItem("user_id", response.body.user.id);
+        window.localStorage.setItem('user',JSON.stringify(response.body.user));
       });
   });
 });
